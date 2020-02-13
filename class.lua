@@ -6,18 +6,18 @@ function class:new(...)
 	setmetatable(nc,self)
 
 	--run inherits inits; and go through nested tables
-	local function _inheritInit(self)
+	local function _inheritInit(self,...)
 		local inherit=rawget(self,"__inherit")
 		if inherit then
 			for i=#inherit,1,-1 do
 			    local l=inherit[i]
-				_inheritInit(l)
+				_inheritInit(l,...)
 				local func=l.__init
-				if func then func(nc) end
+				if func then func(nc,...) end
 			end
 		end
 	end
-	_inheritInit(self)
+	_inheritInit(self,...)
 
 	if self.__init then self.__init(nc,...) end
 	return nc
